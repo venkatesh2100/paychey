@@ -1,30 +1,29 @@
 
-# Paymatter  
+# paychey
 
-A web application for seamless transactions.  
+A web application for seamless transactions.
 
-## Getting Started  
+## Getting Started
 
-1. **Clone the repo**  
+1. **Clone the repo**
    ```sh
-   git clone https://github.com/venkatesh2100/paymatter.git
-   cd paymatter
+   git clone https://github.com/venkatesh2100/paychey.git
+   cd paychey
    ```
 
-2. **Install dependencies**  
+2. **Install dependencies**
    ```sh
    npm install turbo || npm i
    ```
 
-3. **Run the app**  
+3. **Run the app**
    ```sh
    turbo run dev
    ```
 
-##  Features  
-- Secure and fast transactions  
-- User authentication  
-- Transaction history  
+##  Features
+- Secure and fast transactions
+- User authentication
+- Transaction history
 - Turbo Repo
 ---
-
