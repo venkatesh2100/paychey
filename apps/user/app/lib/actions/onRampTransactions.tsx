@@ -10,7 +10,7 @@ export default async function CreateOnRampTransactions(
   amount: string
 ) {
   const session = await getServerSession(authOptions);
-  console.log("Session:", session);
+  // console.log("Session:", session);
   if (!session?.user?.id) throw new Error("User not found");
 
   const userID = Number(session?.user.id);
@@ -31,6 +31,7 @@ export default async function CreateOnRampTransactions(
   try {
     const response = await fetch(
       "https://paychey-bankhook.onrender.com/"
+      // "http://localhost:3001/"
       , {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -42,6 +43,8 @@ export default async function CreateOnRampTransactions(
       });
 
     const json = await response.json();
+    // console.log("Webhook raw response:", text);
+    // const text = await response.text();
     console.log("Webhook response:", json);
   } catch (e) {
     console.error("Error calling webhook:", e);

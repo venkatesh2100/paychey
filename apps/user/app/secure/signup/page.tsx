@@ -346,7 +346,7 @@ export default function SignupPage() {
         </div>
 
         {/* Signup Card */}
-        <div className="bg-white rounded-xl shadow-2xl p-8 sm:p-10">
+        <div className="bg-white rounded-xl shadow-2xl p-8 sm:p-10 ">
           {error && (
             <div className="mb-6 p-3 bg-red-50 text-red-700 rounded-lg flex items-center">
               <svg

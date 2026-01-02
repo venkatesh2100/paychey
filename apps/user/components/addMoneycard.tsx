@@ -5,11 +5,19 @@ import { Card } from "@repo/ui/card";
 import { Select } from "@repo/ui/select";
 // import { useState } from "react";
 import { TextInput } from "@repo/ui/textInput";
+import dynamic from "next/dynamic";
 import CreateOnRampTractions from "../app/lib/actions/onRampTransactions";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimesCircle, FaSpinner } from "react-icons/fa";
 import { useState } from "react";
-import { Player } from "@lottiefiles/react-lottie-player";
+const Player = dynamic(
+  () =>
+    import("@lottiefiles/react-lottie-player").then(
+      (mod) => mod.Player
+    ),
+  { ssr: false }
+);
+// import { Player } from "@lottiefiles/react-lottie-player";
 import successAnimation from "../public/animations/success.json";
 import { useRef } from "react";
 
@@ -19,7 +27,6 @@ const SUPPORTED_BANKS = [
 ];
 
 export const AddMoney = () => {
-
   const [amount, setAmount] = useState("");
   const [provider, setProvider] = useState(SUPPORTED_BANKS[0]?.name || "");
   const playerRef = useRef<Player>(null);
@@ -27,8 +34,16 @@ export const AddMoney = () => {
   const [status, setStatus] = useState<
     "idle" | "processing" | "success" | "failed"
   >("idle");
+  const [error, setError] = useState<string | null>(null);
 
   const handleAddMoney = async () => {
+    const num = Number(amount);
+
+    if (isNaN(num) || num <= 0 || num > 1000) {
+      setError("Amount must be between  ฿1 and  ฿1000");
+      return;
+    }
+
     setStatus("processing");
     try {
       const res = await CreateOnRampTractions(provider, amount);
@@ -51,8 +66,23 @@ export const AddMoney = () => {
         <TextInput
           label="Amount"
           placeholder="Amount"
-          onChange={(value) => setAmount(value)}
+          onChange={(value) => {
+            const num = Number(value);
+            setAmount(value);
+
+            if (isNaN(num)) {
+              setError("Please enter a valid number");
+            } else if (num <= 0) {
+              setError("Amount must be greater than  ฿0");
+            } else if (num > 1000) {
+              setError("Maximum add amount is  ฿1000");
+            } else {
+              setError(null);
+            }
+          }}
         />
+        {error && <p className="text-sm text-red-500 mt-2">{error}</p>}
+
         <div className="py-4 text-left">Bank</div>
         <Select
           onSelect={(value) => {
@@ -65,8 +95,8 @@ export const AddMoney = () => {
             value: x.name,
           }))}
         />
-        <div className="flex justify-center pt-4">
-          <Button onClick={handleAddMoney}>Add Money</Button>
+        <div className="flex    pt-4">
+          <Button className="mx-auto border shadow-md border-none p-2 rounded-2xl bg-green-200" onClick={handleAddMoney}>Add Money</Button>
         </div>
       </div>
 
@@ -102,7 +132,7 @@ export const AddMoney = () => {
                   />
                 </>
               )}
-            {status === "success" && (
+              {status === "success" && (
                 <>
                   <Player
                     ref={playerRef}

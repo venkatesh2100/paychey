@@ -32,7 +32,7 @@ async function getBalance() {
   const session = await getServerSession(authOptions);
   const user = session?.user as CustomUser | undefined;
   if (!user?.id) {
-    redirect("/home",);
+    redirect("/home");
   }
   console.log("User ID:", user?.id);
   const balance = await prisma.balance.findFirst({
@@ -164,12 +164,13 @@ export default async function TransferDashboard() {
                         {txn.currency} {(txn.amount / 100).toLocaleString()}
                       </p>
                       <span
-                        className={`text-xs px-2 py-1 rounded-full ${txn.status === "Success"
-                          ? "bg-green-100 text-green-800"
-                          : txn.status === "Processing"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : "bg-red-100 text-red-800"
-                          }`}
+                        className={`text-xs px-2 py-1 rounded-full ${
+                          txn.status === "Success"
+                            ? "bg-green-100 text-green-800"
+                            : txn.status === "Processing"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                        }`}
                       >
                         {txn.status}
                       </span>
